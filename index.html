@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Universal Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    
+    :root {
+  --bg-color: #ffffff;
+  --text-color: #4d4747;  /* 🔥 Changed from black to white for dark image background */
+  --btn-color: #3e3a3a;
+  --nav-bg: rgba(255, 255, 255, 0.1);
+}
+
+
+
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #f2e9e9;
+      --btn-color: #ffffff;
+      --nav-bg: #1f1f1f;
+    }
+
+    body.blue {
+      --bg-color: #e0f0ff;
+      --text-color: #003366;
+      --btn-color: #0077cc;
+      --nav-bg: #cce6ff;
+    }
+
+    body.pink {
+      --bg-color: #ffe6f0;
+      --text-color: #b30059;
+      --btn-color: #ff66a3;
+      --nav-bg: #ffd6e8;
+    }
+
+    body.green {
+      --bg-color: #e6ffed;
+      --text-color: #005f2f;
+      --btn-color: #00cc66;
+      --nav-bg: #ccffe0;
+    }
+
+    body.lavender {
+      --bg-color: #f3e8ff;
+      --text-color: #5d3f6a;
+      --btn-color: #b366ff;
+      --nav-bg: #edd8ff;
+    }
+
+    body.purple {
+      --bg-color: #efe6ff;
+      --text-color: #4b0082;
+      --btn-color: #a64dff;
+      --nav-bg: #e0ccff;
+    }
+
+    body.red {
+      --bg-color: #ffe5e5;
+      --text-color: #8b0000;
+      --btn-color: #ff3333;
+      --nav-bg: #ffcccc;
+    }
+
+    body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.main-wrapper {
+  background: url('CALCULA.png') no-repeat center top;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+   
+}
+
+
+    .nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: relative;
+}
+
+.logo {
+  margin-right: auto;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.nav-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--text-color);
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #0077ff;
+}
+
+    .theme-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      --text-color: #0e0e0e;
+    }
+
+    .theme-selector select {
+      padding: 0.5rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      --text-color: #0e0e0e;
+    }
+
+    main {
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      height: 90vh;
+      padding-left: 5rem;
+    }
+
+    .title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+  font-weight: 900;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.description {
+  font-size: 1.25rem;
+  max-width: 500px;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+
+    .calc-button {
+  background-color: var(--btn-color);
+  color: #ffffff; /* White text */
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+
+    .calc-button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <header>
+  <div class="nav-container">
+    <h3 class="logo">Calculator</h3>
+    <nav class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#calculator-types">Calculator Types</a>
+      <a href="#review">Review</a>
+    </nav>
+    <div class="theme-selector">
+      <label for="theme">🎨 Theme:</label>
+      <select id="theme" onchange="changeTheme(this.value)">
+        <option value="">Default</option>
+        <option value="dark">Dark</option>
+        <option value="blue">Blue</option>
+        <option value="pink">Pink</option>
+        <option value="green">Green</option>
+        <option value="lavender">Lavender</option>
+        <option value="purple">Purple</option>
+        <option value="red">Red</option>
+      </select>
+    </div>
+  </div>
+</header>
+<div class="main-wrapper">
+  <main>
+    <h1 class="title">🌍 Universal Calculator</h1>
+    <p class="description">
+      Calculate everything in one place – from basic math to love compatibility and financial planning. <br />
+      Your all-in-one smart calculation hub!
+    </p>
+    <button class="calc-button" onclick="window.location.href='#calculator'">Use the Calculator</button>
+  </main>
+</div>
+
+
+
+  <!-- About Section Starts Here -->
+ <!-- About Section Starts -->
+<section id="about" style="padding: 4rem 5rem; background-color: transparent; backdrop-filter: blur(10px); font-family: 'Poppins', sans-serif;">
+
+  <!-- Highlighted Heading -->
+  <div style="text-align: center; margin-bottom: 3rem;">
+    <h2 style="
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-color);
+      background-color: rgba(255, 255, 255, 0.6);
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+      📌 About Universal Calculator
+    </h2>
+  </div>
+
+  <!-- Flex Container -->
+  <div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+    
+    <!-- Text Column -->
+    <div style="flex: 1 1 50%; min-width: 300px;">
+      <p style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--text-color); line-height: 1.8;">
+        The <strong>Universal Calculator</strong> is a powerful all-in-one tool designed to simplify your everyday calculations.
+        Whether you're solving simple arithmetic problems, planning your finances, measuring health metrics, or even checking love compatibility – this calculator has got you covered.
+      </p>
+      <p style="font-size: 1.25rem; margin-bottom: 1.5rem; color: var(--text-color); line-height: 1.8;">
+        This tool isn't just for students or engineers – it's for everyone. From calculating discounts while shopping to figuring out your BMI or interest returns, the Universal Calculator becomes a smart companion in your digital life.
+      </p>
+      <p style="font-size: 1.25rem; color: var(--text-color); line-height: 1.8;">
+        Built with passion and attention to user needs, the Universal Calculator ensures speed, accuracy, and simplicity. Try it now and experience the convenience of having all calculations in one place.
+      </p>
+    </div>
+
+    <!-- Video Column -->
+    <div style="flex: 1 1 40%; min-width: 300px; display: flex; align-items: center; justify-content: center;">
+      <div style="position: relative; width: 100%; padding-bottom: 75%; max-width: 480px;">
+        <video controls style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+          <source src="calculator.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- About Section Ends -->
+
+
+
+  <!-- About Section Ends Here -->
+<!-- Calculator Types Section Starts -->
+<section id="calculator-types" style="padding: 4rem 5rem; background-color: rgba(255, 255, 255, 0.85); backdrop-filter: blur(5px); border-top: 2px solid #ccc;">
+  <h2 style="
+  font-size: 2.5rem;
+  margin-bottom: 2.5rem;
+  text-align: center;
+  color: var(--text-color);
+  background-color: #ffdc91;
+  padding: 0.75rem 2rem;
+  border-radius: 10px;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+">
+  🧮 Calculator Types
+</h2>
+
+  
+  <div style="
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    max-width: 900px;
+    margin: 0 auto;
+    gap: 2rem;
+    justify-items: center;
+    text-align: center;
+  ">
+    <button onclick="window.location.href='#basic'" style="padding: 1rem; width: 100%; font-size: 1.2rem; border-radius: 10px; background-color: var(--btn-color); color: white; border: none;">➕ Basic Calculator</button>
+
+    <button onclick="window.location.href='#financial'" style="padding: 1rem; width: 100%; font-size: 1.2rem; border-radius: 10px; background-color: var(--btn-color); color: white; border: none;">🏦 Financial Calculator</button>
+
+    <button onclick="window.location.href='#love'" style="padding: 1rem; width: 100%; font-size: 1.2rem; border-radius: 10px; background-color: var(--btn-color); color: white; border: none;">💘 Love Compatibility</button>
+
+    <button onclick="window.location.href='#scientific'" style="padding: 1rem; width: 100%; font-size: 1.2rem; border-radius: 10px; background-color: var(--btn-color); color: white; border: none;">🧪 Scientific Calculator</button>
+
+    <button onclick="window.location.href='#health'" style="padding: 1rem; width: 100%; font-size: 1.2rem; border-radius: 10px; background-color: var(--btn-color); color: white; border: none;">🩺 Health Calculator</button>
+
+    <button onclick="window.location.href='#discount'" style="padding: 1rem; width: 100%; font-size: 1.2rem; border-radius: 10px; background-color: var(--btn-color); color: white; border: none;">💸 Discount Calculator</button>
+  </div>
+</section>
+<!-- Calculator Types Section Ends -->
+
+<section id="basic" style="background-color: 	#FFFACD; padding: 4rem;">
+  <h2 style="text-align: left; font-size: 2.5rem; margin-bottom: 2rem; color: #333;">🧮 Basic Calculator</h2>
+  
+  <div style="display: flex; justify-content: center;">
+    <div style="background-color: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 320px;">
+      <input type="text" id="basicDisplay" readonly style="width: 100%; padding: 1rem; font-size: 1.5rem; margin-bottom: 1rem; text-align: right; border: 1px solid #ccc; border-radius: 5px;" />
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+        <button onclick="appendValue('7')">7</button>
+        <button onclick="appendValue('8')">8</button>
+        <button onclick="appendValue('9')">9</button>
+        <button onclick="appendValue('/')">÷</button>
+        <button onclick="appendValue('4')">4</button>
+        <button onclick="appendValue('5')">5</button>
+        <button onclick="appendValue('6')">6</button>
+        <button onclick="appendValue('*')">×</button>
+        <button onclick="appendValue('1')">1</button>
+        <button onclick="appendValue('2')">2</button>
+        <button onclick="appendValue('3')">3</button>
+        <button onclick="appendValue('-')">−</button>
+        <button onclick="appendValue('0')">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="appendValue('+')">+</button>
+        <button onclick="clearDisplay()" style="grid-column: span 4; background-color: #ff6666; color: white;">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function appendValue(value) {
+      document.getElementById("basicDisplay").value += value;
+    }
+
+    function calculate() {
+      try {
+        document.getElementById("basicDisplay").value = eval(document.getElementById("basicDisplay").value);
+      } catch {
+        document.getElementById("basicDisplay").value = "Error";
+      }
+    }
+
+    function clearDisplay() {
+      document.getElementById("basicDisplay").value = "";
+    }
+  </script>
+</section>
+<section id="financial" style="background-color: #f0f0ff; padding: 4rem;">
+  <h2 style="text-align: left; font-size: 2.5rem; margin-bottom: 2rem; color: #003366;">💰 Financial Calculator</h2>
+  
+  <div style="display: flex; justify-content: center;">
+    <div style="background-color: #fff; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 400px;">
+      <h3 style="margin-bottom: 1.5rem; color: #003366;">Simple Interest Calculator</h3>
+
+      <label>Principal Amount (P):</label>
+      <input type="number" id="principal" style="width: 100%; padding: 10px; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;" />
+
+      <label>Rate of Interest (R%):</label>
+      <input type="number" id="rate" style="width: 100%; padding: 10px; margin-bottom: 1rem; border-radius: 5px; border: 1px solid #ccc;" />
+
+      <label>Time (T in years):</label>
+      <input type="number" id="time" style="width: 100%; padding: 10px; margin-bottom: 1.5rem; border-radius: 5px; border: 1px solid #ccc;" />
+
+      <button onclick="calculateInterest()" style="background-color: #003366; color: white; padding: 10px 15px; border: none; border-radius: 5px; width: 100%; margin-bottom: 1rem; cursor: pointer;">
+        Calculate Interest
+      </button>
+
+      <div id="interestResult" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: #003366;"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculateInterest() {
+      const principal = parseFloat(document.getElementById("principal").value);
+      const rate = parseFloat(document.getElementById("rate").value);
+      const time = parseFloat(document.getElementById("time").value);
+
+      if (isNaN(principal) || isNaN(rate) || isNaN(time)) {
+        document.getElementById("interestResult").textContent = "Please enter valid numbers!";
+        return;
+      }
+
+      const interest = (principal * rate * time) / 100;
+      const total = principal + interest;
+
+      document.getElementById("interestResult").innerHTML =
+        `Simple Interest: ₹${interest.toFixed(2)}<br>Total Amount: ₹${total.toFixed(2)}`;
+    }
+  </script>
+</section>
+<section id="scientific" style="background-color: #e0ffe0; padding: 4rem;">
+  <h2 style="text-align: left; font-size: 2.5rem; margin-bottom: 2rem; color: #005f2f;">🔬 Scientific Calculator</h2>
+
+  <div style="display: flex; justify-content: center;">
+    <div style="background-color: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 400px;">
+      <input type="text" id="sci-display" readonly style="width: 100%; padding: 10px; font-size: 1.2rem; margin-bottom: 1rem; border: 1px solid #ccc; border-radius: 5px;" />
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 1rem;">
+        <button onclick="appendSci('7')">7</button>
+        <button onclick="appendSci('8')">8</button>
+        <button onclick="appendSci('9')">9</button>
+        <button onclick="appendSci('/')">/</button>
+
+        <button onclick="appendSci('4')">4</button>
+        <button onclick="appendSci('5')">5</button>
+        <button onclick="appendSci('6')">6</button>
+        <button onclick="appendSci('*')">*</button>
+
+        <button onclick="appendSci('1')">1</button>
+        <button onclick="appendSci('2')">2</button>
+        <button onclick="appendSci('3')">3</button>
+        <button onclick="appendSci('-')">-</button>
+
+        <button onclick="appendSci('0')">0</button>
+        <button onclick="appendSci('.')">.</button>
+        <button onclick="calculateSci()">=</button>
+        <button onclick="appendSci('+')">+</button>
+
+        <button onclick="sciFunc('sqrt')">√</button>
+        <button onclick="sciFunc('pow')">x²</button>
+        <button onclick="sciFunc('log')">log</button>
+        <button onclick="appendSci('(')">(</button>
+        
+        <button onclick="sciFunc('sin')">sin</button>
+        <button onclick="sciFunc('cos')">cos</button>
+        <button onclick="sciFunc('tan')">tan</button>
+        <button onclick="appendSci(')')">)</button>
+      </div>
+
+      <button onclick="clearSci()" style="width: 100%; padding: 10px; font-size: 1.1rem; background-color: #ff4d4d; color: white; border: none; border-radius: 5px;">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    let sciDisplay = document.getElementById("sci-display");
+
+    function appendSci(value) {
+      sciDisplay.value += value;
+    }
+
+    function clearSci() {
+      sciDisplay.value = '';
+    }
+
+    function calculateSci() {
+      try {
+        sciDisplay.value = eval(sciDisplay.value);
+      } catch (e) {
+        sciDisplay.value = "Error";
+      }
+    }
+
+    function sciFunc(func) {
+      let value = parseFloat(sciDisplay.value);
+      if (isNaN(value)) {
+        sciDisplay.value = "Invalid";
+        return;
+      }
+
+      switch (func) {
+        case 'sqrt':
+          sciDisplay.value = Math.sqrt(value);
+          break;
+        case 'pow':
+          sciDisplay.value = Math.pow(value, 2);
+          break;
+        case 'log':
+          sciDisplay.value = Math.log10(value);
+          break;
+        case 'sin':
+          sciDisplay.value = Math.sin(value * Math.PI / 180).toFixed(5);
+          break;
+        case 'cos':
+          sciDisplay.value = Math.cos(value * Math.PI / 180).toFixed(5);
+          break;
+        case 'tan':
+          sciDisplay.value = Math.tan(value * Math.PI / 180).toFixed(5);
+          break;
+      }
+    }
+  </script>
+</section>
+
+<section id="health" style="background-color: #fffbe6; padding: 4rem;">
+  <h2 style="text-align: left; font-size: 2.5rem; margin-bottom: 2rem; color: #005f2f;">🏥 Health Calculator</h2>
+
+  <div style="display: flex; justify-content: center;">
+    <div style="background-color: #ffffff; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 420px; text-align: center;">
+
+      <label for="weight" style="font-size: 1.2rem; color: #005f2f;">Your Weight (kg):</label>
+      <input type="number" id="weight" placeholder="e.g. 56" style="width: 100%; padding: 10px; margin-bottom: 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+
+      <label for="height" style="font-size: 1.2rem; color: #005f2f;">Your Height (cm):</label>
+      <input type="number" id="height" placeholder="e.g. 149" style="width: 100%; padding: 10px; margin-bottom: 1.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+
+      <button onclick="calculateBMI()" style="width: 100%; background-color: #00cc66; color: white; padding: 10px; font-size: 1.1rem; border: none; border-radius: 6px;">
+        ⚖️ Calculate BMI
+      </button>
+
+      <div id="bmiResult" style="font-size: 1.2rem; color: #004d1a; font-weight: bold; margin-top: 1rem;"></div>
+
+      <button onclick="clearBMI()" style="margin-top: 0.8rem; width: 100%; padding: 10px; font-size: 1rem; background-color: #00b359; color: white; border: none; border-radius: 6px;">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const height = parseFloat(document.getElementById("height").value) / 100;
+
+      const resultDiv = document.getElementById("bmiResult");
+
+      if (!weight || !height || height === 0) {
+        resultDiv.innerText = "❌ Please enter valid height and weight.";
+        return;
+      }
+
+      const bmi = weight / (height * height);
+      let category = "";
+      let advice = "";
+
+      if (bmi < 18.5) {
+        category = "Underweight";
+        advice = `You may need to gain about ${(18.5 * height * height - weight).toFixed(1)} kg.`;
+      } else if (bmi < 24.9) {
+        category = "Normal";
+        advice = "✅ You're in a healthy range!";
+      } else {
+        category = "Overweight";
+        advice = `You may need to lose about ${(weight - 24.9 * height * height).toFixed(1)} kg.`;
+      }
+
+      resultDiv.innerText = `Your BMI is ${bmi.toFixed(1)} (${category}). ${advice}`;
+    }
+
+    function clearBMI() {
+      document.getElementById("weight").value = "";
+      document.getElementById("height").value = "";
+      document.getElementById("bmiResult").innerText = "";
+    }
+  </script>
+</section>
+
+
+<section id="love" style="background-color: #fff0f5; padding: 4rem;">
+  <h2 style="text-align: left; font-size: 2.5rem; margin-bottom: 2rem; color: #b30059;">💘 Love Compatibility Calculator</h2>
+
+  <div style="display: flex; justify-content: center;">
+    <div style="background-color: #ffffff; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 420px; text-align: center;">
+
+      <label for="yourName" style="font-size: 1.2rem; color: #b30059;">Your Name:</label>
+      <input type="text" id="yourName" placeholder="e.g. Ayesha" style="width: 100%; padding: 10px; margin-bottom: 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+
+      <label for="partnerName" style="font-size: 1.2rem; color: #b30059;">Partner's Name:</label>
+      <input type="text" id="partnerName" placeholder="e.g. Zayan" style="width: 100%; padding: 10px; margin-bottom: 1.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+
+      <button onclick="calculateLove()" style="width: 100%; background-color: #ff66a3; color: white; padding: 10px; font-size: 1.1rem; border: none; border-radius: 6px;">
+        💓 Calculate Compatibility
+      </button>
+
+      <div id="loveResult" style="font-size: 1.3rem; color: #880044; font-weight: bold; margin-top: 1rem;"></div>
+
+      <button onclick="clearLove()" style="margin-top: 0.8rem; width: 100%; padding: 10px; font-size: 1rem; background-color: #ff4d88; color: white; border: none; border-radius: 6px;">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    function calculateLove() {
+      const name1 = document.getElementById("yourName").value.trim().toLowerCase();
+      const name2 = document.getElementById("partnerName").value.trim().toLowerCase();
+
+      const resultDiv = document.getElementById("loveResult");
+
+      if (!name1 || !name2) {
+        resultDiv.innerText = "❌ Please enter both names to calculate.";
+        return;
+      }
+
+      const combined = name1 + name2;
+      let score = 0;
+      for (let i = 0; i < combined.length; i++) {
+        score += combined.charCodeAt(i);
+      }
+      const percentage = 50 + (score % 51);
+
+      let message = "";
+      if (percentage >= 90) {
+        message = `❤️ ${percentage}% – A match made in heaven!`;
+      } else if (percentage >= 75) {
+        message = `💖 ${percentage}% – A strong and beautiful bond.`;
+      } else if (percentage >= 60) {
+        message = `💗 ${percentage}% – Good match, with a little spark!`;
+      } else {
+        message = `💔 ${percentage}% – Needs some love and care.`;
+      }
+
+      resultDiv.innerText = message;
+    }
+
+    function clearLove() {
+      document.getElementById("yourName").value = "";
+      document.getElementById("partnerName").value = "";
+      document.getElementById("loveResult").innerText = "";
+    }
+  </script>
+</section>
+<section id="discount" style="background-color: #e6f7ff; padding: 4rem;">
+  <h2 style="text-align: left; font-size: 2.5rem; margin-bottom: 2rem; color: #003366;">💸 Discount Calculator</h2>
+
+  <div style="display: flex; justify-content: center;">
+    <div style="background-color: #ffffff; padding: 2rem; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 420px; text-align: center;">
+
+      <label for="originalPrice" style="font-size: 1.2rem; color: #003366;">Original Price (₹):</label>
+      <input type="number" id="originalPrice" placeholder="e.g. 999" style="width: 100%; padding: 10px; margin-bottom: 1rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+
+      <label for="discountRate" style="font-size: 1.2rem; color: #003366;">Discount (%) :</label>
+      <input type="number" id="discountRate" placeholder="e.g. 20" style="width: 100%; padding: 10px; margin-bottom: 1.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 8px;">
+
+      <button onclick="calculateDiscount()" style="width: 100%; background-color: #0077cc; color: white; padding: 10px; font-size: 1.1rem; border: none; border-radius: 6px;">
+        🧮 Calculate Discount
+      </button>
+
+      <div id="discountResult" style="font-size: 1.2rem; color: #002244; font-weight: bold; margin-top: 1rem;"></div>
+
+      <button onclick="clearDiscount()" style="margin-top: 0.8rem; width: 100%; padding: 10px; font-size: 1rem; background-color: #005fa3; color: white; border: none; border-radius: 6px;">Clear</button>
+    </div>
+  </div>
+
+  <script>
+    function calculateDiscount() {
+      const original = parseFloat(document.getElementById("originalPrice").value);
+      const discount = parseFloat(document.getElementById("discountRate").value);
+
+      const resultDiv = document.getElementById("discountResult");
+
+      if (!original || !discount || discount < 0 || discount > 100) {
+        resultDiv.innerText = "❌ Please enter valid values.";
+        return;
+      }
+
+      const discountAmount = (original * discount) / 100;
+      const finalPrice = original - discountAmount;
+
+      resultDiv.innerHTML = `
+        🧾 Discount Amount: ₹${discountAmount.toFixed(2)}<br>
+        🏷️ Final Price after Discount: ₹${finalPrice.toFixed(2)}
+      `;
+    }
+
+    function clearDiscount() {
+      document.getElementById("originalPrice").value = "";
+      document.getElementById("discountRate").value = "";
+      document.getElementById("discountResult").innerText = "";
+    }
+  </script>
+</section>
+
+<!-- Reviews Section -->
+<section id="review" style="padding: 4rem 2rem; background-color: #f1f5f9;">
+  <h2 style="text-align: center; font-size: 2.8rem; margin-bottom: 3rem; color: var(--text-color);">💬 What Our Users Say</h2>
+  
+  <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; max-width: 1300px; margin: 0 auto;">
+
+    <div style="background-color: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 280px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color);">⭐ Aadhil M.</h3>
+      <p style="font-size: 1rem; color: #444;">“The basic calculator is super fast and accurate. UI is clean and neat. Use it daily for quick math!”</p>
+    </div>
+
+    <div style="background-color: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 280px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color);">⭐ Ishita Verma</h3>
+      <p style="font-size: 1rem; color: #444;">“Love Compatibility is fun 😂 but the Health calculator helped me understand BMI easily!”</p>
+    </div>
+
+    <div style="background-color: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 280px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color);">⭐ Ravi Kumar</h3>
+      <p style="font-size: 1rem; color: #444;">“I didn’t expect so many features! The Discount Calculator saved me time and money.”</p>
+    </div>
+
+    <div style="background-color: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 280px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color);">⭐ Vaishnavi J.</h3>
+      <p style="font-size: 1rem; color: #444;">“Theme switch is a cool feature! I always use the pink theme – makes it more fun and personal.”</p>
+    </div>
+
+    <div style="background-color: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 280px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color);">⭐ Harish Dev</h3>
+      <p style="font-size: 1rem; color: #444;">“Perfect calculator for all needs. Love the clean layout and responsiveness. Works great on phone.”</p>
+    </div>
+
+    <div style="background-color: white; padding: 1.8rem; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.08); width: 280px;">
+      <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--text-color);">⭐ Meena R.</h3>
+      <p style="font-size: 1rem; color: #444;">“Health calculator told me I need to lose 5kg 😅 Thanks for the motivation! It’s simple and smart.”</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- Submit Your Review Form -->
+<section id="submit-review" style="padding: 4rem 2rem; background-color: #f0f4ff;"> <!-- Added light blue background -->
+  <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 2rem; color: var(--text-color);">📝 Submit Your Review</h2>
+
+  <form style="max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; padding: 2rem; border-radius: 12px; background-color: #ffffff; box-shadow: 0 8px 20px rgba(0,0,0,0.08);">
+    
+    <label for="name" style="font-weight: 600; color: var(--text-color);">Your Name</label>
+    <input type="text" id="name" name="name" placeholder="Enter your name" required style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;">
+
+    <label for="rating" style="font-weight: 600; color: var(--text-color);">Rating</label>
+    <select id="rating" name="rating" required style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;">
+      <option value="">Choose a rating</option>
+      <option value="⭐">⭐</option>
+      <option value="⭐⭐">⭐⭐</option>
+      <option value="⭐⭐⭐">⭐⭐⭐</option>
+      <option value="⭐⭐⭐⭐">⭐⭐⭐⭐</option>
+      <option value="⭐⭐⭐⭐⭐">⭐⭐⭐⭐⭐</option>
+    </select>
+
+    <label for="review" style="font-weight: 600; color: var(--text-color);">Your Review</label>
+    <textarea id="review" name="review" placeholder="Write your thoughts here..." rows="5" required style="padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px;"></textarea>
+
+    <button type="submit" style="padding: 0.75rem; background-color: var(--btn-color); color: white; border: none; border-radius: 30px; font-size: 1rem; cursor: pointer;">Submit Review</button>
+  </form>
+</section>
+
+<!-- 🌍 Footer Section for Universal Calculator -->
+<footer style="background-color: #222; color: #f0f0f0; padding: 3rem 2rem; font-family: 'Segoe UI', sans-serif;">
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto; gap: 2rem;">
+
+    <!-- Quick Links -->
+    <div>
+      <h3 style="margin-bottom: 1rem; color: #ffffff;">Quick Links</h3>
+      <ul style="list-style: none; padding: 0; line-height: 1.8;">
+        <li><a href="#home" style="color: #cccccc; text-decoration: none;">Home</a></li>
+        <li><a href="#about" style="color: #cccccc; text-decoration: none;">About</a></li>
+        <li><a href="#calculator-types" style="color: #cccccc; text-decoration: none;">Calculators</a></li>
+        <li><a href="#reviews" style="color: #cccccc; text-decoration: none;">Reviews</a></li>
+        <li><a href="#submit-review" style="color: #cccccc; text-decoration: none;">Submit Review</a></li>
+      </ul>
+    </div>
+
+    <!-- Extra Links: Calculator Types -->
+    <div>
+      <h3 style="margin-bottom: 1rem; color: #ffffff;">Calculator Types</h3>
+      <ul style="list-style: none; padding: 0; line-height: 1.8;">
+        <li><a href="#basic" style="color: #cccccc; text-decoration: none;">Basic Calculator</a></li>
+        <li><a href="#financial" style="color: #cccccc; text-decoration: none;">Financial Calculator</a></li>
+        <li><a href="#love" style="color: #cccccc; text-decoration: none;"> Love Calculator</a></li>
+        <li><a href="#scientific" style="color: #cccccc; text-decoration: none;"> Scientific Calculator</a></li>
+        <li><a href="#health" style="color: #cccccc; text-decoration: none;"> Health Calculator</a></li>
+        <li><a href="#discount" style="color: #cccccc; text-decoration: none;"> Discount Calculator</a></li>
+      </ul>
+    </div>
+
+    <!-- Locations -->
+    <div>
+      <h3 style="margin-bottom: 1rem; color: #ffffff;">Locations</h3>
+      <ul style="list-style: none; padding: 0; line-height: 1.8;">
+        <li style="color: #cccccc;">India</li>
+        <li style="color: #cccccc;">USA</li>
+        <li style="color: #cccccc;">Japan</li>
+        <li style="color: #cccccc;">France</li>
+      </ul>
+    </div>
+
+    <!-- Contact Info -->
+    <div>
+      <h3 style="margin-bottom: 1rem; color: #ffffff;">Contact Info</h3>
+      <ul style="list-style: none; padding: 0; line-height: 1.8;">
+        <li style="color: #cccccc;">📞 +12312 31123</li>
+        <li style="color: #cccccc;">📧 example@gmail.com</li>
+        <li style="color: #cccccc;">📍 Mumbai, India - 400104</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Bottom Footer Line -->
+  <div style="text-align: center; margin-top: 2rem; border-top: 1px solid #444; padding-top: 1.5rem; color: #aaaaaa;">
+    Created by <span style="color: #ffffff; font-weight: bold;">Shifana</span> | All rights reserved
+  </div>
+</footer>
+
+
+  <script>
+    function changeTheme(theme) {
+      document.body.className = theme;
+    }
+  </script>
+
+</body>
+</html>
